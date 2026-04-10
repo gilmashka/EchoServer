@@ -17,7 +17,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<UserCategoryPreferenceDto>> getAll(Long userId){
+    public ResponseEntity<List<UserCategoryPreferenceDto>> getAll(@PathVariable Long userId){
         List<UserCategoryPreferenceDto> categories =  categoryService.getAllCategoriesWithPreference(userId);
         return ResponseEntity.status(200).body(categories);
     }

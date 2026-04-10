@@ -11,6 +11,6 @@ public interface UserCategoryPreferenceRepository extends JpaRepository<UserCate
 
     List<UserCategoryPreference> findAllById_UserId(Long userId);
 
-    Optional<UserCategoryPreference> findByUserIdAndCategoryId(Long userId, int categoryId);
+    Optional<UserCategoryPreference> findByUserIdAndCategoryIdFromKudaGo(Long userId, int categoryId);
 
 }
