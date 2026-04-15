@@ -36,6 +36,9 @@ public class User {
 
     private String avatarPath;
 
+    @Enumerated(EnumType.STRING)
+    private City city;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserCategoryPreference> userCategoryPreferences;
 
@@ -58,3 +61,4 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<NotedEvent> notedEvents = new ArrayList<>();
 }
+

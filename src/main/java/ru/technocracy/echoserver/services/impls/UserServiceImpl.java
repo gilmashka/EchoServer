@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.technocracy.echoserver.dto.UserForm;
+import ru.technocracy.echoserver.models.City;
 import ru.technocracy.echoserver.models.User;
 import ru.technocracy.echoserver.repositories.UserRepository;
 import ru.technocracy.echoserver.services.UserService;
@@ -35,6 +36,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByNickname(String nickname){
         return userRepository.findByNickname(nickname);
+    }
+
+    @Transactional
+    @Override
+    public City getUserCityById(Long userId){
+        return userRepository.getCityByUserId(userId);
     }
 
 }

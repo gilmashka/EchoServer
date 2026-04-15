@@ -15,4 +15,5 @@ public class UserCategoryPreferenceDto {
     private int id;
     private String name;
     private PreferenceType preference;
+    private String slug;
 }

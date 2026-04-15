@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class CategoryFromKudaGoDto {
     private int id;
     private String name;
+    private String slug;
 }

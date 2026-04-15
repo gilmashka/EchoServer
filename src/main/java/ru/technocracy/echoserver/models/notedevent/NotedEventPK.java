@@ -15,5 +15,5 @@ public class NotedEventPK implements Serializable {
 
     private Long userId;
 
-    private Long eventId;
+    private int eventId;
 }

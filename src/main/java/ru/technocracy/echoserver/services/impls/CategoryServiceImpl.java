@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
                 preference = existing.get();
             }
             else{
-                preference = preference = new UserCategoryPreference();
+                preference = new UserCategoryPreference();
                 preference.setId(pk);
                 preference.setUser(userRepository.getReferenceById(userId));
                 preference.setCategory(categoryRepository.getReferenceById(dto.getId()));

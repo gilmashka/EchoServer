@@ -22,6 +22,8 @@ public class Category {
 
     private String name;
 
+    private String slug;
+
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserCategoryPreference> userCategoryPreferences;
 }

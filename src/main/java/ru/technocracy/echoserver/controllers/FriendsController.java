@@ -22,16 +22,22 @@ public class FriendsController {
     private final UserFriendshipService userFriendshipService;
     private final UserService userService;
 
-    @GetMapping("/incoming/{userId}")
-    public ResponseEntity<List<UserFriendshipDto>> getAllIncomingRequests(@PathVariable Long userId){
+    @GetMapping("/incoming")
+    public ResponseEntity<List<UserFriendshipDto>> getAllIncomingRequests(Principal principal){
+
+        User user = userService.getUserByNickname(principal.getName());
+
         return ResponseEntity.status(200)
-                .body(userFriendshipService.getAllIncomingRequests(userId));
+                .body(userFriendshipService.getAllIncomingRequests(user.getId()));
     }
 
-    @GetMapping("/outcoming/{userId}")
-    public ResponseEntity<List<UserFriendshipDto>> getAllOutcomingRequests(@PathVariable Long userId){
+    @GetMapping("/outcoming")
+    public ResponseEntity<List<UserFriendshipDto>> getAllOutcomingRequests(Principal principal){
+
+        User user = userService.getUserByNickname(principal.getName());
+
         return ResponseEntity.status(200)
-                .body(userFriendshipService.getAllOutcomingRequests(userId));
+                .body(userFriendshipService.getAllOutcomingRequests(user.getId()));
     }
 
     @PostMapping("/request")
