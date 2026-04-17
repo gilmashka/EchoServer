@@ -12,6 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getUserById(Long id);
 
-    @Query("SELECT u.city FROM User u WHERE u.id =: userId")
+    @Query("SELECT u.city FROM User u WHERE u.id = :userId")
     City getCityByUserId(@Param("userId") Long id);
 }

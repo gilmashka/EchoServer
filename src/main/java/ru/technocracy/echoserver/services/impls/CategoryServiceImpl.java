@@ -43,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(category -> UserCategoryPreferenceDto.builder()
                         .id(category.getIdFromKudaGo())
                         .name(category.getName())
+                        .slug(category.getSlug())
                         .preference(prefsMap.getOrDefault(category.getIdFromKudaGo(), PreferenceType.NEUTRAL))
                         .build())
                 .collect(Collectors.toList());
@@ -57,7 +58,6 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<UserCategoryPreference> existing = userCategoryPreferenceRepository.findById(pk);
         if(dto.getPreference() == PreferenceType.NEUTRAL){
             existing.ifPresent(i -> userCategoryPreferenceRepository.delete(i));
-            return;
         }
         else{
 

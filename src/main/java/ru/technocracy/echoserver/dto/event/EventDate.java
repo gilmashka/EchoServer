@@ -13,17 +13,17 @@ public @Builder
 @NoArgsConstructor
 class EventDate{
 
-    private Long startDate;
-    private Long endDate;
+    private Long start;
+    private Long end;
 
     public LocalDateTime getStartDateTime() {
-        return Instant.ofEpochSecond(startDate)
+        return Instant.ofEpochSecond(start)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }
 
     public LocalDateTime getEndDateTime() {
-        return Instant.ofEpochSecond(endDate)
+        return Instant.ofEpochSecond(end)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
     }

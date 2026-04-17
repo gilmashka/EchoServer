@@ -1,40 +1,27 @@
 package ru.technocracy.echoserver.dto.event;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventFromKudaGoDto {
+public class ShortEventDto {
 
     private Integer id;
     private String title;
-    private String bodyText;
     private String price;
-    private String siteUrl;
     private List<EventDate> dates;
-    private List<String> images;
 
-    private Integer placeId;
-
-    @JsonGetter("place")
-    public void setPlace(Map<String, Object> place){
-        if(place != null && place.containsKey("id")){
-            this.placeId = (int) place.get("id");
-        }
-    }
-
-    private String imageUrl;  // просто строка
+    private String imageUrl;
 
     @JsonSetter("images")
     public void setImages(List<Map<String, Object>> imagesList) {
@@ -43,4 +30,5 @@ public class EventFromKudaGoDto {
         }
     }
 }
+
 

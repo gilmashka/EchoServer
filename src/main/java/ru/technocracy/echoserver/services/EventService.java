@@ -2,6 +2,7 @@ package ru.technocracy.echoserver.services;
 
 import jakarta.transaction.Transactional;
 import ru.technocracy.echoserver.dto.event.EventFromKudaGoDto;
+import ru.technocracy.echoserver.dto.event.FullEventDto;
 import ru.technocracy.echoserver.exceptions.BadRequestException;
 import ru.technocracy.echoserver.models.notedevent.NoteType;
 
@@ -18,5 +19,5 @@ public interface EventService {
     void deleteNotedEvent(Long userId, int eventId) throws BadRequestException;
 
     @Transactional
-    EventFromKudaGoDto getDetailsForEvent(int eventId);
+    FullEventDto getDetailsForEvent(int eventId);
 }

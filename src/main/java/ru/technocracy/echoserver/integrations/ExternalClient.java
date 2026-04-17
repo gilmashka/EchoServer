@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
 import ru.technocracy.echoserver.dto.CategoryFromKudaGoDto;
 import ru.technocracy.echoserver.dto.event.EventFromKudaGoDto;
-import ru.technocracy.echoserver.dto.event.ShortEventFromKudaGoDto;
+import ru.technocracy.echoserver.dto.event.KudaGoResponse;
+import ru.technocracy.echoserver.dto.event.PlaceFromKudaGo;
+import ru.technocracy.echoserver.dto.event.ShortEventDto;
 
 import java.util.List;
 
@@ -20,11 +22,14 @@ public interface ExternalClient {
     public EventFromKudaGoDto checkEventExists(@PathVariable("id") int idFromKudaGo);
 
     @GetExchange("/events/?lang=ru&fields=id,dates,title,price,images&categories={categories}&location={location}&actual_since={since}")
-    public List<ShortEventFromKudaGoDto> getUserFavouriteEventFeed(
+    public KudaGoResponse getUserFavouriteEventFeed(
             @PathVariable("categories") String categories,
             @PathVariable("location") String location,
             @PathVariable("since") long since
     );
+
+    @GetExchange("/places/{id}/?lang=ru&fields=id,title,address,foreign_url")
+    public PlaceFromKudaGo getPlaceDetails(@PathVariable("id") int placeId);
 
 
 }

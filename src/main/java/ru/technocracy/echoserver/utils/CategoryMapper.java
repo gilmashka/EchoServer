@@ -16,6 +16,7 @@ public class CategoryMapper {
                         categoryFromKudaGoDto -> Category.builder()
                                 .idFromKudaGo(categoryFromKudaGoDto.getId())
                                 .name(categoryFromKudaGoDto.getName())
+                                .slug(categoryFromKudaGoDto.getSlug())
                                 .build())
                 .collect(Collectors.toList());
     }

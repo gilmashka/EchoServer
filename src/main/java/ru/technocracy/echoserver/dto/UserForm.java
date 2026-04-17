@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.technocracy.echoserver.models.City;
 
 @Data
 @Builder
@@ -14,4 +15,5 @@ public class UserForm {
     private String firstName;
     private String lastName;
     private String password;
+    private City city;
 }

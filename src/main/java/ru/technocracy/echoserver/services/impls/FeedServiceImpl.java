@@ -3,7 +3,8 @@ package ru.technocracy.echoserver.services.impls;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.technocracy.echoserver.dto.UserCategoryPreferenceDto;
-import ru.technocracy.echoserver.dto.event.ShortEventFromKudaGoDto;
+import ru.technocracy.echoserver.dto.event.KudaGoResponse;
+import ru.technocracy.echoserver.dto.event.ShortEventDto;
 import ru.technocracy.echoserver.exceptions.NotFoundException;
 import ru.technocracy.echoserver.integrations.ExternalClient;
 import ru.technocracy.echoserver.models.usercategorypreference.PreferenceType;
@@ -23,16 +24,16 @@ public class FeedServiceImpl implements FeedService {
     private final ExternalClient externalClient;
 
     @Override
-    public List<ShortEventFromKudaGoDto> getUserFavoritesEventFeed(Long userId) {
+    public List<ShortEventDto> getUserFavoritesEventFeed(Long userId) {
         return getFeed(userId, PreferenceType.LIKE);
     }
 
     @Override
-    public List<ShortEventFromKudaGoDto> getUserNeutralEventFeed(Long userId) {
+    public List<ShortEventDto> getUserNeutralEventFeed(Long userId) {
         return getFeed(userId, PreferenceType.NEUTRAL);
     }
 
-    private List<ShortEventFromKudaGoDto> getFeed(Long userId, PreferenceType type) throws NotFoundException{
+    private List<ShortEventDto> getFeed(Long userId, PreferenceType type) throws NotFoundException{
         String categories = categoryService.getAllCategoriesWithPreference(userId).stream()
                 .filter(c -> c.getPreference() == type)
                 .map(UserCategoryPreferenceDto::getSlug)
@@ -42,10 +43,15 @@ public class FeedServiceImpl implements FeedService {
             throw new NotFoundException("Вы не выбрали ни одной " + type.name() + "категории");
         }
 
-        return externalClient.getUserFavouriteEventFeed(
+        String location = userService.getUserCityById(userId).name();
+        long since = System.currentTimeMillis() / 1000;
+
+        KudaGoResponse response = externalClient.getUserFavouriteEventFeed(
                 categories,
                 userService.getUserCityById(userId).name(),
                 System.currentTimeMillis() / 1000
         );
+
+        return response.getResults();
     }
 }

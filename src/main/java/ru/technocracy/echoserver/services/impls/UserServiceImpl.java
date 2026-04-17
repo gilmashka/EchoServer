@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
                 .nickname(userForm.getNickname())
                 .firstName(userForm.getFirstName())
                 .lastName(userForm.getLastName())
+                .city(userForm.getCity())
                 .password(passwordEncoder.encode(userForm.getPassword()))
                 .build();
 

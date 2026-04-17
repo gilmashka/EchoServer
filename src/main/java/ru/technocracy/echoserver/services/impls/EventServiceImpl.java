@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.technocracy.echoserver.dto.event.EventFromKudaGoDto;
+import ru.technocracy.echoserver.dto.event.FullEventDto;
+import ru.technocracy.echoserver.dto.event.PlaceFromKudaGo;
 import ru.technocracy.echoserver.exceptions.BadRequestException;
 import ru.technocracy.echoserver.exceptions.NotFoundException;
 import ru.technocracy.echoserver.integrations.ExternalClient;
@@ -82,12 +84,19 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     @Override
-    public EventFromKudaGoDto getDetailsForEvent(int eventId) throws NotFoundException{
+    public FullEventDto getDetailsForEvent(int eventId) throws NotFoundException{
         EventFromKudaGoDto event = externalClient.getEventDetails(eventId);
         if(event == null){
             throw new NotFoundException("Данного события не существует");
         }
-        return event;
+
+        PlaceFromKudaGo place = externalClient.getPlaceDetails(event.getPlaceId());
+
+        return FullEventDto.builder()
+                .place(place)
+                .event(event)
+                .build();
+
     }
 
 
