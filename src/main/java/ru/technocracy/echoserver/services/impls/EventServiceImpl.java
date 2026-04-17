@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 import ru.technocracy.echoserver.dto.event.EventFromKudaGoDto;
 import ru.technocracy.echoserver.dto.event.FullEventDto;
 import ru.technocracy.echoserver.dto.event.PlaceFromKudaGo;
+import ru.technocracy.echoserver.dto.event.ShortEventDto;
 import ru.technocracy.echoserver.exceptions.BadRequestException;
 import ru.technocracy.echoserver.exceptions.NotFoundException;
 import ru.technocracy.echoserver.integrations.ExternalClient;
+import ru.technocracy.echoserver.models.User;
 import ru.technocracy.echoserver.models.notedevent.NoteType;
 import ru.technocracy.echoserver.models.notedevent.NotedEvent;
 import ru.technocracy.echoserver.models.notedevent.NotedEventPK;
 import ru.technocracy.echoserver.repositories.NotedEventRepository;
+import ru.technocracy.echoserver.repositories.UserRepository;
 import ru.technocracy.echoserver.services.EventService;
 
 import java.util.Collections;
@@ -24,25 +27,20 @@ public class EventServiceImpl implements EventService {
 
     private final ExternalClient externalClient;
     private final NotedEventRepository notedEventRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     @Override
-    public List<EventFromKudaGoDto> getAllNotedEventsByUserIdWhereStatusIs(Long userId, NoteType noteType) {
+    public List<ShortEventDto> getAllNotedEventsByUserIdWhereStatusIs(Long userId, NoteType noteType) {
 
-        List<Long> notedEventsId = notedEventRepository.getEventByUserIdWhereStatusIs(userId, noteType);
+        User user = userRepository.getUserById(userId);
+        if(user == null){
+            throw new NotFoundException("Пользователь не найден");
+        }
 
-        //TODO: сделать запросы к апи для детализации
-        return Collections.emptyList();
-    }
+        List<Integer> idNotedEvents = notedEventRepository.getEventByUserIdWhereStatusIs(userId, noteType);
 
-    @Transactional
-    @Override
-    public List<EventFromKudaGoDto> getAllNotedEventByUserId(Long userId) {
-
-        List<Long> notedEventsId = notedEventRepository.getNotedEventsByUserId(userId);
-
-        //TODO: сделать запросы к апи для детализации
-        return Collections.emptyList();
+        return idNotedEvents.stream().map(externalClient::getEvent).toList();
     }
 
     @Transactional
@@ -51,7 +49,7 @@ public class EventServiceImpl implements EventService {
 
         EventFromKudaGoDto event = externalClient.checkEventExists(eventId);
         if(event == null){
-            throw new BadRequestException("Данное мероприятие не найдено");
+            throw new NotFoundException("Данное мероприятие не найдено");
         }
 
         NotedEventPK PK = new NotedEventPK(userId, eventId);
@@ -71,12 +69,12 @@ public class EventServiceImpl implements EventService {
 
         EventFromKudaGoDto event = externalClient.checkEventExists(eventId);
         if(event == null){
-            throw new BadRequestException("Данное мероприятие не найдено");
+            throw new NotFoundException("Данное мероприятие не найдено");
         }
 
         NotedEventPK PK = new NotedEventPK(userId, eventId);
         if(notedEventRepository.getNotedEventById(PK) == null){
-            throw new BadRequestException("Запись о взаимодействии не найдена");
+            throw new NotFoundException("Запись о взаимодействии не найдена");
         } else{
             notedEventRepository.deleteNotedEventById(PK);
         }
@@ -98,6 +96,4 @@ public class EventServiceImpl implements EventService {
                 .build();
 
     }
-
-
 }

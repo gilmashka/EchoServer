@@ -13,7 +13,6 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/feed")
 @RequiredArgsConstructor
 public class FeedController {

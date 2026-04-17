@@ -31,5 +31,6 @@ public interface ExternalClient {
     @GetExchange("/places/{id}/?lang=ru&fields=id,title,address,foreign_url")
     public PlaceFromKudaGo getPlaceDetails(@PathVariable("id") int placeId);
 
-
+    @GetExchange("/events/{id}/?lang=ru&fields=id,title,price,dates,images")
+    public ShortEventDto getEvent(@PathVariable("id") int idFromKudaGo);
 }
